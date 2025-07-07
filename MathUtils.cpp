@@ -6,8 +6,8 @@
 #include <cmath>
 
 
-double MathUtils::lowPassFilter(double value, double filter) {
-    return (value < 0) ? -std::max(-value, filter) : std::max(value, filter);
+double MathUtils::lowPassFilter(double previous, double input, double alpha) {
+    return alpha * input + (1 - alpha) * previous;
 }
 
 double MathUtils::epsilonEquals(double a, double b, double epsilon) {

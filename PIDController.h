@@ -101,11 +101,11 @@ private:
     double reference = 0;
     double measure = 0;
     double prevError = NAN;
+    double prevROCError = 0.0;
 
     double errorTolerance = 0;
     double rOCTolerance = 0;
 
-    double rOCError = 0;
     double iAccum = 0;
 };
 

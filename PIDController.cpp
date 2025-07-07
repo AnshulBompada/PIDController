@@ -170,8 +170,9 @@ double PIDController::getError() {
     return reference - measure;
 }
 
+/* Returns previous ROC error, but due to return nature, this is fun */
 double PIDController::getROCError() {
-    return rOCError;
+    return prevROCError;
 }
 
 double PIDController::getErrorTolerance() {
@@ -231,18 +232,18 @@ double PIDController::calculate() {
             iAccum = getIPositiveAccumLimit() / getkI();
     }
 
-    double iError = iAccum * getkI();
-
-    prevError = getError();
+    double iOutput = iAccum * getkI();
 
     double errorROC = (getError() - prevError) / dt;
-    if(dFilter != 0) {
-        errorROC = MathUtils::lowPassFilter(errorROC, getDFilter());
+    if(!MathUtils::epsilonEquals(dFilter, 0)) {
+        errorROC = MathUtils::lowPassFilter(
+            prevROCError, errorROC, getDFilter());
     }
-
-    rOCError = errorROC;
 
     double dOutput = getkD() * errorROC;
 
-    return pOutput + iError + dOutput;
+    prevROCError = errorROC;
+    prevError = getError();
+
+    return pOutput + iOutput + dOutput;
 }

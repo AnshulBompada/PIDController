@@ -8,8 +8,7 @@
 
 
 namespace  MathUtils {
-    /* Basically just a clamp*/
-    double lowPassFilter(double value, double filter);
+    double lowPassFilter(double previous, double input, double alpha);
 
     double epsilonEquals(double a, double b, double epsilon);
 
