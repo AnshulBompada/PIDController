@@ -7,7 +7,7 @@
 
 
 double MathUtils::lowPassFilter(double value, double filter) {
-    return (value < 0) ? -std::max(value, filter) : std::max(value, filter);
+    return (value < 0) ? -std::max(-value, filter) : std::max(value, filter);
 }
 
 double MathUtils::epsilonEquals(double a, double b, double epsilon) {

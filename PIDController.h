@@ -33,7 +33,7 @@ public:
     double getINegativeRange();
     void setINegativeRange(double pINegativeR);
 
-    double getInIRange();
+    bool getInIRange();
 
     /* INTEGRATION ACCUMULATION LIMITS(WIND-UP) */
     void setAccumLimits(double accumLimit);

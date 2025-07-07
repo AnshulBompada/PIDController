@@ -9,85 +9,85 @@
 #include "MathUtils.h"
 
 PIDController::PIDController(double pP, double pI, double pD, double pDT) {
-    PIDController::kP = pP;
-    PIDController::kI = pI;
-    PIDController::kD = pD;
-    PIDController::dt = pDT;
+    kP = pP;
+    kI = pI;
+    kD = pD;
+    dt = pDT;
 }
 
 double PIDController::getkP() {
-    return  PIDController::kP;
+    return  kP;
 }
 
 void PIDController::setkP(double pP) {
-    PIDController::kP = pP;
+    kP = pP;
 }
 
 double PIDController::getkI() {
-    return  PIDController::kI;
+    return  kI;
 }
 
 void PIDController::setkI(double pI) {
-    PIDController::kI = pI;
+    kI = pI;
 }
 
 double PIDController::getkD() {
-    return PIDController::kD;
+    return kD;
 }
 
 void PIDController::setkD(double pD) {
-    PIDController::kD = pD;
+    kD = pD;
 }
 
 double PIDController::getDt() {
-    return PIDController::kD;
+    return dt;
 }
 
 void PIDController::setDt(double pDt) {
-    PIDController::dt = pDt;
+    dt = pDt;
 }
 
 void PIDController::setIRange(double pIRange) {
-    PIDController::setIRange(-pIRange, pIRange);
+    setIRange(-pIRange, pIRange);
 }
 
 void PIDController::setIRange(double pINegativeR, double pIPositiveR) {
-    PIDController::setINegativeRange(pINegativeR);
-    PIDController::setIPositiveRange(pIPositiveR);
+    setINegativeRange(pINegativeR);
+    setIPositiveRange(pIPositiveR);
 }
 
 double PIDController::getIPositiveRange() {
-    return PIDController::iPositiveRange;
+    return iPositiveRange;
 }
 
 void PIDController::setIPositiveRange(double pIPositiveR) {
-    PIDController::iPositiveRange = pIPositiveR;
+    iPositiveRange = pIPositiveR;
 }
 
 double PIDController::getINegativeRange() {
-    return PIDController::iNegativeRange;
+    return iNegativeRange;
 }
 
 void PIDController::setINegativeRange(double pINegativeR) {
-    PIDController::iNegativeRange = pINegativeR;
+    iNegativeRange = pINegativeR;
 }
 
-double PIDController::getInIRange() {
+bool PIDController::getInIRange() {
     return getError() > getINegativeRange() && getError() <= getIPositiveRange();
 }
 
 /* INTEGRATION ACCUMULATION LIMITS */
 void PIDController::setAccumLimits(double pAccumLimit) {
-    PIDController::setAccumLimits(-pAccumLimit, pAccumLimit);
+    setAccumLimits(-pAccumLimit, pAccumLimit);
 }
 
 void PIDController::setAccumLimits(double pINegativeAL, double pIPositiveAL) {
-    PIDController::setINegativeAccumLimit(-pINegativeAL);
-    PIDController::setIPositiveAccumLimit(pIPositiveAL);
+    setINegativeAccumLimit(-pINegativeAL);
+    setIPositiveAccumLimit(pIPositiveAL);
 }
 
 double PIDController::getIPositiveAccumLimit() {
-    return PIDController::iPositiveAccumLimit;
+    return iPositiveAccumLimit;
 }
 
 void PIDController::setIPositiveAccumLimit(double pIPositiveAL) {
@@ -95,70 +95,70 @@ void PIDController::setIPositiveAccumLimit(double pIPositiveAL) {
 }
 
 double PIDController::getINegativeAccumLimit() {
-    return  PIDController::iNegativeAccumLimit;
+    return  iNegativeAccumLimit;
 }
 
 void PIDController::setINegativeAccumLimit(double pINegativeAL) {
-    iPositiveAccumLimit = pINegativeAL;
+    iNegativeAccumLimit = pINegativeAL;
 }
 
 double PIDController::getIAccumulation() {
-    return PIDController::iAccum;
+    return iAccum;
 }
 
 void PIDController::reset() {
-    PIDController::iAccum = 0;
-    PIDController::prevError = NAN;
-    PIDController::rOCTolerance = 0;
+    iAccum = 0;
+    prevError = NAN;
+    rOCTolerance = 0;
 }
 
 /* D-FILTER */
 double PIDController::getDFilter() {
-    return PIDController::dFilter;
+    return dFilter;
 }
 
 void PIDController::setDFilter(double pDFilter) {
-    PIDController::dFilter = pDFilter;
+    dFilter = pDFilter;
 }
 
 /* CONTINOUS WRAP */
 bool PIDController::getContinuousWrap() {
-    return PIDController::continousWrap;
+    return continousWrap;
 }
 
 double PIDController::getLowerDiscontinuity() {
-    return PIDController::lowerDiscontinuity;
+    return lowerDiscontinuity;
 }
 
 double PIDController::getHigherDiscontinuity() {
-    return  PIDController::higherDiscontinuity;
+    return  higherDiscontinuity;
 }
 
 void PIDController::enableContinuousWrap(double pLowerDisconinuity, double pHigherDiscontinuity) {
-    PIDController::continousWrap = true;
-    PIDController::lowerDiscontinuity = pLowerDisconinuity;
-    PIDController::higherDiscontinuity = pHigherDiscontinuity;
+    continousWrap = true;
+    lowerDiscontinuity = pLowerDisconinuity;
+    higherDiscontinuity = pHigherDiscontinuity;
 }
 
 void PIDController::disableContinuousWrap() {
-    PIDController::continousWrap = false;
+    continousWrap = false;
 }
 
 
 double PIDController::getReference() {
-    return  PIDController::reference;
+    return  reference;
 }
 
 void PIDController::setReference(double pReference) {
-    PIDController::reference = pReference;
+    reference = pReference;
 }
 
 double PIDController::getMeasure() {
-    return  PIDController::measure;
+    return measure;
 }
 
 void PIDController::setMeasure(double pMeasure) {
-    PIDController::measure = pMeasure;
+    measure = pMeasure;
 }
 
 double PIDController::getError() {
@@ -175,64 +175,63 @@ double PIDController::getROCError() {
 }
 
 double PIDController::getErrorTolerance() {
-    return PIDController::errorTolerance;
+    return errorTolerance;
 }
 
 void PIDController::setErrorTolerance(double pTol) {
-    PIDController::errorTolerance = pTol;
+    errorTolerance = pTol;
 }
 
 double PIDController::getROCTolerance() {
-    return PIDController::rOCTolerance;
+    return rOCTolerance;
 }
 
 void PIDController::setROCTolerance(double pTol) {
-    PIDController::rOCTolerance = pTol;
+    rOCTolerance = pTol;
 }
 
 bool PIDController::inErrorTolerance() {
-    return std::abs(PIDController::getError()) < getErrorTolerance();
+    return std::abs(getError()) < getErrorTolerance();
 }
 
 bool PIDController::inROCTolerance() {
-    return std::abs(PIDController::getError()) < getErrorTolerance();
+    return std::abs(getROCError()) < getROCTolerance();
 }
 
 double PIDController::calculate(double pReference, double pMeasure) {
-    PIDController::setReference(pReference);
-    PIDController::setMeasure(pMeasure);
+    setReference(pReference);
+    setMeasure(pMeasure);
     return calculate();
 }
 
 double PIDController::calculate() {
-    if(PIDController::prevError == NAN) {
+    if(std::isnan(prevError)) {
         prevError = getError();
     }
-
 
     double pOutput = getkP() * getError();
 
     if(
-        !MathUtils::epsilonEquals(PIDController::iPositiveRange,0)
+        !MathUtils::epsilonEquals(iPositiveRange,0)
         ||
-        !MathUtils::epsilonEquals(PIDController::iNegativeRange,0)) {
-        if(getInIRange()) PIDController::iAccum += getError() * dt;
-        else PIDController::iAccum = 0;
-    } else PIDController::iAccum += getError() * dt;
+        !MathUtils::epsilonEquals(iNegativeRange,0)) {
+        if(getInIRange()) iAccum += getError() * dt;
+        else iAccum = 0;
+    } else iAccum += getError() * dt;
 
     if(
-        (!MathUtils::epsilonEquals(PIDController::iPositiveAccumLimit, 0)
+        (!MathUtils::epsilonEquals(iPositiveAccumLimit, 0)
         ||
-        !MathUtils::epsilonEquals(PIDController::iNegativeAccumLimit, 0))
+        !MathUtils::epsilonEquals(iNegativeAccumLimit, 0))
         &&
-        !MathUtils::epsilonEquals(PIDController::getkI(), 0)) {
+        !MathUtils::epsilonEquals(getkI(), 0)) {
         if(getIAccumulation() < getINegativeAccumLimit())
-            PIDController::iAccum = getINegativeAccumLimit() / PIDController::getkI();
+            iAccum = getINegativeAccumLimit() / getkI();
         else if(getIAccumulation() > getIPositiveAccumLimit())
-            PIDController::iAccum = getIPositiveAccumLimit() / PIDController::getkI();
+            iAccum = getIPositiveAccumLimit() / getkI();
     }
 
-    double iError = iAccum * PIDController::getkI();
+    double iError = iAccum * getkI();
 
     prevError = getError();
 
@@ -241,9 +240,9 @@ double PIDController::calculate() {
         errorROC = MathUtils::lowPassFilter(errorROC, getDFilter());
     }
 
-    PIDController::rOCError = errorROC;
+    rOCError = errorROC;
 
-    double dOutput = PIDController::getkD() * errorROC;
+    double dOutput = getkD() * errorROC;
 
     return pOutput + iError + dOutput;
 }
