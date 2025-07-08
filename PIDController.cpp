@@ -47,10 +47,13 @@ void PIDController::setDt(double pDt) {
     dt = pDt;
 }
 
+/* INTEGRATION ACCUMULATION LIMITS(WIND-UP) */
+/* Setting I-Range to zero disables it on controller */
 void PIDController::setIRange(double pIRange) {
     setIRange(-pIRange, pIRange);
 }
 
+/* Setting I-Range to zero disables it on controller */
 void PIDController::setIRange(double pINegativeR, double pIPositiveR) {
     setINegativeRange(pINegativeR);
     setIPositiveRange(pIPositiveR);
@@ -60,6 +63,7 @@ double PIDController::getIPositiveRange() {
     return iPositiveRange;
 }
 
+/* Setting I-Range to zero disables it on controller */
 void PIDController::setIPositiveRange(double pIPositiveR) {
     iPositiveRange = pIPositiveR;
 }
@@ -68,6 +72,7 @@ double PIDController::getINegativeRange() {
     return iNegativeRange;
 }
 
+/* Setting I-Range to zero disables it on controller */
 void PIDController::setINegativeRange(double pINegativeR) {
     iNegativeRange = pINegativeR;
 }
@@ -77,10 +82,12 @@ bool PIDController::getInIRange() {
 }
 
 /* INTEGRATION ACCUMULATION LIMITS */
+/* Setting Accumulation limits to zero disables it on controller */
 void PIDController::setAccumLimits(double pAccumLimit) {
     setAccumLimits(-pAccumLimit, pAccumLimit);
 }
 
+/* Setting Accumulation limits to zero disables it on controller */
 void PIDController::setAccumLimits(double pINegativeAL, double pIPositiveAL) {
     setINegativeAccumLimit(-pINegativeAL);
     setIPositiveAccumLimit(pIPositiveAL);
@@ -90,6 +97,7 @@ double PIDController::getIPositiveAccumLimit() {
     return iPositiveAccumLimit;
 }
 
+/* Setting Accumulation limit to zero disables it on controller */
 void PIDController::setIPositiveAccumLimit(double pIPositiveAL) {
     iPositiveAccumLimit = pIPositiveAL;
 }
@@ -98,6 +106,7 @@ double PIDController::getINegativeAccumLimit() {
     return  iNegativeAccumLimit;
 }
 
+/* Setting Accumulation limit to zero disables it on controller */
 void PIDController::setINegativeAccumLimit(double pINegativeAL) {
     iNegativeAccumLimit = pINegativeAL;
 }
@@ -106,19 +115,26 @@ double PIDController::getIAccumulation() {
     return iAccum;
 }
 
-void PIDController::reset() {
+/* Sets integral accumulation back to zero */
+void PIDController::resetIAccumulation() {
     iAccum = 0;
-    prevError = NAN;
-    rOCTolerance = 0;
-}
+};
 
 /* D-FILTER */
 double PIDController::getDFilter() {
     return dFilter;
 }
 
+/* Setting D-filter to zero disables it on controller */
 void PIDController::setDFilter(double pDFilter) {
     dFilter = pDFilter;
+}
+
+/* Sets integral accumulation and derivative error to zero*/
+void PIDController::reset() {
+    iAccum = 0;
+    prevError = NAN;
+    rOCTolerance = 0;
 }
 
 /* CONTINOUS WRAP */
@@ -150,7 +166,12 @@ double PIDController::getReference() {
 }
 
 void PIDController::setReference(double pReference) {
+    setReference(pReference, false);
+}
+
+void PIDController::setReference(double pReference, bool resetROCError) {
     reference = pReference;
+    if(resetROCError) prevError = NAN;
 }
 
 double PIDController::getMeasure() {
@@ -170,39 +191,49 @@ double PIDController::getError() {
     return reference - measure;
 }
 
-/* Returns previous ROC error, but due to return nature, this is fun */
+/* Returns previous ROC error, but due to return nature, good enough for most use cases */
 double PIDController::getROCError() {
     return prevROCError;
 }
 
+/* Not used on controller, just for telemetry */
 double PIDController::getErrorTolerance() {
     return errorTolerance;
 }
 
+/* Not used on controller, just for telemetry */
 void PIDController::setErrorTolerance(double pTol) {
     errorTolerance = pTol;
 }
 
+/* Not used on controller, just for telemetry */
 double PIDController::getROCTolerance() {
     return rOCTolerance;
 }
 
+/* Not used on controller, just for telemetry */
 void PIDController::setROCTolerance(double pTol) {
     rOCTolerance = pTol;
 }
 
+/* Not used on controller, just for telemetry */
 bool PIDController::inErrorTolerance() {
     return std::abs(getError()) < getErrorTolerance();
 }
 
+/* Not used on controller, just for telemetry */
 bool PIDController::inROCTolerance() {
     return std::abs(getROCError()) < getROCTolerance();
 }
 
-double PIDController::calculate(double pReference, double pMeasure) {
-    setReference(pReference);
+double PIDController::calculate(double pReference, bool resetROCError, double pMeasure) {
+    setReference(pReference, resetROCError);
     setMeasure(pMeasure);
     return calculate();
+}
+
+double PIDController::calculate(double pReference, double pMeasure) {
+    return calculate(pReference, false, pMeasure);
 }
 
 double PIDController::calculate() {
@@ -212,6 +243,7 @@ double PIDController::calculate() {
 
     double pOutput = getkP() * getError();
 
+    /* God forbid if some units need values less 10e-16 to be inside the epsilon */
     if(
         !MathUtils::epsilonEquals(iPositiveRange,0)
         ||

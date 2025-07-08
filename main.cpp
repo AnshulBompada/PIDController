@@ -3,9 +3,10 @@
 #include "MathUtils.h"
 
 int main() {
-    PIDController controller = PIDController(5.0, 5.0, 5.0, 0.02);
-    controller.setErrorTolerance(1);
-    controller.enableContinuousWrap(0, 100);
+    PIDController controller = PIDController(0.0, 0.0, 5.0, 0.02);
+    controller.setDFilter(0.01);
+    // controller.setErrorTolerance(1);
+    // controller.enableContinuousWrap(0, 100);
     double measure = 0.0;
     while (measure < 510) {
         std:: cout << controller.calculate(500, measure) << std::endl;

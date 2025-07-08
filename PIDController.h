@@ -24,33 +24,46 @@ public:
     void setDt(double pDt);
 
     /* INTEGRATION RANGE */
+    /* Setting I-Range to zero disables it on controller */
     void setIRange(double pIRange);
+    /* Setting I-Range to zero disables it on controller */
     void setIRange(double pINegativeR, double pIPositiveR);
 
     double getIPositiveRange();
+    /* Setting I-Range to zero disables it on controller */
     void setIPositiveRange(double pIPositiveR);
 
     double getINegativeRange();
+    /* Setting I-Range to zero disables it on controller */
     void setINegativeRange(double pINegativeR);
 
     bool getInIRange();
 
     /* INTEGRATION ACCUMULATION LIMITS(WIND-UP) */
+    /* Setting Accumulation limits to zero disables it on controller */
     void setAccumLimits(double accumLimit);
+    /* Setting Accumulation limits to zero disables it on controller */
     void setAccumLimits(double pINegativeAL, double pIPositiveAL);
 
     double getIPositiveAccumLimit();
+    /* Setting Accumulation limit to zero disables it on controller */
     void setIPositiveAccumLimit(double pIPositiveAL);
 
     double getINegativeAccumLimit();
+    /* Setting Accumulation limit to zero disables it on controller */
     void setINegativeAccumLimit(double pINegativeAL);
 
     double getIAccumulation();
-    void reset();
+    /* Sets integral accumulation back to zero */
+    void resetIAccumulation();
 
     /* D-FILTER */
     double getDFilter();
+    /* Setting D-filter to zero disables it on controller */
     void setDFilter(double pDFilter);
+
+    /* Sets integral accumulation and derivative error to zero*/
+    void reset();
 
     /* CONTINUOS WRAP */
     bool getContinuousWrap();
@@ -62,6 +75,7 @@ public:
 
     double getReference();
     void setReference(double pReference);
+    void setReference(double pReference, bool resetROCError);
 
     double getMeasure();
     void setMeasure(double pMeasure);
@@ -69,15 +83,22 @@ public:
     double getError();
     double getROCError();
 
+    /* Not used on controller, just for telemetry */
     double getErrorTolerance();
+    /* Not used on controller, just for telemetry */
     void setErrorTolerance(double pTol);
 
+    /* Not used on controller, just for telemetry */
     double getROCTolerance();
+    /* Not used on controller, just for telemetry */
     void setROCTolerance(double pTol);
 
+    /* Not used on controller, just for telemetry */
     bool inErrorTolerance();
+    /* Not used on controller, just for telemetry */
     bool inROCTolerance();
 
+    double calculate(double pReference, bool resetROCError, double pMeasure);
     double calculate(double pReference, double pMeasure);
     double calculate();
 private:
